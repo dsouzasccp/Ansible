@@ -1,0 +1,13 @@
+---
+  - name: restart zabbix-agent
+    become: yes
+    service:
+      name: zabbix-agent
+      state: restarted
+      enabled: True
+
+  - name: restart zabbix-agent-shutdown
+    service:
+      name: zabbix-agent-shutdown
+      state: restarted
+      enabled: yes

@@ -1,0 +1,15 @@
+---
+
+zabbix_agent_version: 3.2.9-1
+zabbix_agent_base_version: "{{ zabbix_agent_version[:3] }}"
+
+zabbix_agent_server_ip: 10.50.0.115
+zabbix_agent_client_ip: 0.0.0.0
+zabbix_agent_client_hostname: "{{ ec2_tag_Name }}-{{ ec2_id }}"
+zabbix_agent_host_metadata: test
+
+zabbix_agent_autoremove_enabled: true
+
+zabbix_agent_server_user: SIFRA
+zabbix_agent_server_pass: tecno123
+zabbix_agent_server_host: http://tecnonoc.tecnocomp.com.br:3031

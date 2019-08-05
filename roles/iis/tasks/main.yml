@@ -1,0 +1,57 @@
+---
+  - name: ensure iis is installed
+    win_feature:
+      name: 'Web-Server'
+      include_sub_features: yes
+      include_management_tools: yes
+
+  - name: configure app pool
+    win_iis_webapppool:
+      name: '{{ iis_app_pool_name }}'
+      state: started
+      attributes: 
+        startMode: AlwaysRunning
+    when: iis_app_pool_name|default("",true)
+    register: iis_app_pool
+    notify: Restart IIS
+
+  - name: ensure path for site exists
+    win_file:
+      path: '{{ iis_site_path }}'
+      state: directory
+    when: iis_site_name|default("",true)
+
+  - name: allow iis group access to site path
+    win_acl:     
+      path: '{{ iis_site_path }}'
+      user: IIS_IUSRS
+      rights: FullControl
+      type: allow
+      state: present
+      inherit: ContainerInherit, ObjectInherit
+      propagation: 'None'
+
+  - name: configure site
+    win_iis_website:
+      name: '{{ iis_site_name }}'
+      physical_path: '{{iis_site_path|default(omit,true)}}'      
+      application_pool: '{{iis_app_pool_name|default(omit,true)}}'      
+      state: started
+    when: iis_site_name|default("",true)
+    register: iis_site
+    notify: Restart IIS
+    ignore_errors: Yes
+    
+  - name: Copy HealthCheckFile
+    win_copy:
+      src: elb-on.html
+      dest: C:\inetpub\wwwroot\
+      force: yes
+
+
+  
+    
+  
+
+  
+      

@@ -1,0 +1,10 @@
+---
+
+iis_app_pool_name: 'DefaultAppPool'
+iis_app_pool_name1: 'SifraAppPool'
+
+iis_site_name: 'Default Web Site'
+iis_site_name1: 'Site Sifra'
+
+iis_site_path: 'C:\inetpub\wwwroot\'
+iis_site_path1: 'C:\inetpub\wwwroot\sifra\'

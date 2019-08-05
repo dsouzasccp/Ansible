@@ -1,0 +1,10 @@
+---
+
+#zabbix_endpoint: http://monitoramento.com.br/zabbix
+#zabbix_user: "sifra"
+#zabbix_pass: "teste"
+
+zabbix_server_ip: 10.8.6.157
+
+zabbix_client_ip: "{{ ec2_private_ip_address }}"
+zabbix_client_hostname: "{{ ec2_tag_Name }}-{{ ec2_id }}"

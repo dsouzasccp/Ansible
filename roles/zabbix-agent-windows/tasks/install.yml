@@ -1,0 +1,37 @@
+---
+- name: Remove service Zabbix agent
+  win_service:
+    name: Zabbix Agent
+    state: absent
+
+- name: Download Zabbix agent
+  win_get_url:
+    url: 'https://www.zabbix.com/downloads/3.4.6/zabbix_agents_3.4.6.win.zip'
+    dest: C:\Temp\zabbix_agents_3.4.6.win.zip
+
+- name: Unzip zabbix_agent.zip
+  win_unzip:
+    src: C:\Temp\zabbix_agents_3.4.6.win.zip
+    dest: C:\zabbix\
+    delete_archive: yes
+
+- name: Copy file zabbix_agentd.conf for backup
+  win_copy:
+    src: C:\zabbix\conf\zabbix_agentd.win.conf
+    dest: C:\zabbix\conf\zabbix_agentd.win.conf.bkp
+    remote_src: True
+
+#- name: Create service Zabbix Agent
+#  win_service:
+#    name: Zabbix Agent
+#    path: c:\zabbix\bin\win64\zabbix_agentd.exe
+
+- name: Installation zabbix Agent
+  win_shell: c:\zabbix\bin\win64\zabbix_agentd.exe -c c:\zabbix\conf\zabbix_agentd.win.conf --install
+  ignore_errors: True
+
+- name: Configuration Zabbix
+  template:
+    src: zabbix_agentd.conf.j2
+    dest: c:\zabbix\conf\zabbix_agentd.win.conf
+  notify: restart zabbix
